@@ -86,7 +86,10 @@ var tr = through(function (buf) {
     lineCount++; 
 }); 
 
-process.stdin.pipe(split()).pipe(tr).pipe(process.stdout); 
+process.stdin
+    .pipe(split())
+    .pipe(tr)
+    .pipe(process.stdout); 
 
 /* 
 ACTUAL:   "riverrun, past eve and adam's, from swerve of shore to bend "
