@@ -123,6 +123,8 @@ with ease.
 // The above is getting too complex.  A preferred solution would 
 // probably be much simpler.  
 
+// ATTEMPT #2
+// Let's break all the various operations down into discrete functions.   
 var combine = require('stream-combiner'), 
 	through = require('through'), 
 	split = require('split'), 
@@ -176,9 +178,7 @@ function handleJsonLine(genres) {
 function handleEndOfInput(genres) {
 
 	return function () {
-		this.queue(stringifyGenres(genres)); 
-		this.queue("\n");
-		this.queue(null); 
+		this.queue(stringifyGenres(genres), "\n", null); 
 	}
 }
 
@@ -187,7 +187,9 @@ module.exports = function () {
 
 	return combine(
 		split(), 
-		through(handleJsonLine(genreArray), handleEndOfInput(genreArray)), 
+		through(
+			handleJsonLine(genreArray), 
+			handleEndOfInput(genreArray)), 
 		zlib.createGzip()
 	);	
 }; 
